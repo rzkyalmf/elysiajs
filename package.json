@@ -8,11 +8,16 @@
 		"prepare": "husky"
 	},
 	"dependencies": {
-		"elysia": "latest"
+		"@prisma/client": "^6.2.1",
+		"elysia": "latest",
+		"inversify": "^6.2.1",
+		"prisma": "^6.2.1",
+		"reflect-metadata": "^0.2.2"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
-		"bun-types": "latest"
+		"bun-types": "latest",
+		"husky": "^9.1.7"
 	},
 	"module": "src/index.js"
 }
