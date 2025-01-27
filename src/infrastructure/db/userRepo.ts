@@ -6,11 +6,7 @@ import { TYPES } from "../entity/types";
 
 @injectable()
 export class UserRepository implements IUser {
-	private prisma: PrismaClient;
-
-	constructor(@inject(TYPES.prisma) prisma: PrismaClient) {
-		this.prisma = prisma;
-	}
+	constructor(@inject(TYPES.prisma) private prisma: PrismaClient) {}
 
 	async getAll() {
 		const users = await this.prisma.user.findMany();

@@ -1,0 +1,26 @@
+### Register
+POST http://localhost:8000/api/v1/register
+Content-Type: application/json
+
+{
+  "name": "admin3",
+  "email": "admin3@gmail.com",
+  "password": "12345678"
+}
+
+### Login
+POST http://localhost:8000/api/v1/login
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "12345678"
+}
+
+### Check Session
+POST http://localhost:8000/api/v1/session
+Content-Type: application/json
+
+{
+    "sessionId" : "cm6eyl39y0001irmeficfb7lz"
+}

@@ -9,11 +9,7 @@ import { TYPES } from "../../infrastructure/entity/types";
 
 @injectable()
 export class NoteServices {
-	private noteRepo: NoteRepository;
-
-	constructor(@inject(TYPES.noteRepo) noteRepo: NoteRepository) {
-		this.noteRepo = noteRepo;
-	}
+	constructor(@inject(TYPES.noteRepo) private noteRepo: NoteRepository) {}
 
 	async getAll(userId: string) {
 		const notes = await this.noteRepo.getAll(userId);

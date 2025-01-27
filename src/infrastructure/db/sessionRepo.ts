@@ -6,11 +6,7 @@ import { TYPES } from "../entity/types";
 
 @injectable()
 export class SessionRepository implements ISession {
-	private prisma: PrismaClient;
-
-	constructor(@inject(TYPES.prisma) prisma: PrismaClient) {
-		this.prisma = prisma;
-	}
+	constructor(@inject(TYPES.prisma) private prisma: PrismaClient) {}
 
 	async getOne(sessionId: string) {
 		const session = await this.prisma.session.findUnique({

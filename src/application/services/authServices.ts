@@ -3,19 +3,14 @@ import type { UserRepository } from "../../infrastructure/db/userRepo";
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../infrastructure/entity/types";
+import { UserDTO } from "../dtos/userDTO";
 
 @injectable()
 export class AuthServices {
-	private userRepo: UserRepository;
-	private sessionRepo: SessionRepository;
-
 	constructor(
-		@inject(TYPES.userRepo) userRepo: UserRepository,
-		@inject(TYPES.sessionRepo) sessionRepo: SessionRepository,
-	) {
-		this.userRepo = userRepo;
-		this.sessionRepo = sessionRepo;
-	}
+		@inject(TYPES.userRepo) private userRepo: UserRepository,
+		@inject(TYPES.sessionRepo) private sessionRepo: SessionRepository,
+	) {}
 
 	async registerUser(name: string, email: string, password: string) {
 		const user = await this.userRepo.getOne(email);
@@ -31,7 +26,8 @@ export class AuthServices {
 			password: hashedPassword,
 			avatar: "",
 		});
-		return newUser;
+
+		return new UserDTO(newUser).fromEntity();
 	}
 
 	async loginUser(email: string, password: string) {

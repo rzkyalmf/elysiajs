@@ -6,11 +6,7 @@ import { TYPES } from "../entity/types";
 
 @injectable()
 export class NoteRepository implements INote {
-	private prisma: PrismaClient;
-
-	constructor(@inject(TYPES.prisma) prisma: PrismaClient) {
-		this.prisma = prisma;
-	}
+	constructor(@inject(TYPES.prisma) private prisma: PrismaClient) {}
 
 	async getAll(userId: string) {
 		const notes = await this.prisma.note.findMany({
