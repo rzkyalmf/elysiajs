@@ -23,11 +23,10 @@ export class SessionRepository implements ISession {
 
 			return session;
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				throw new DBError("Error getting resources from DB");
+			if (error instanceof NotFoundError) {
+				throw error;
 			}
-
-			throw new DBError("something went wrong while doing DB Operation");
+			throw new DBError("Database error");
 		}
 	}
 

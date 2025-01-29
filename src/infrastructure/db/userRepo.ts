@@ -40,16 +40,15 @@ export class UserRepository implements IUser {
 			});
 
 			if (!user) {
-				throw new NotFoundError("User not found"); // Untuk general case
+				throw new NotFoundError("User not found");
 			}
 
 			return user;
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				throw new DBError("Error getting resources from DB");
+			if (error instanceof NotFoundError) {
+				throw error;
 			}
-
-			throw new DBError("something went wrong while doing DB Operation");
+			throw new DBError("Database error");
 		}
 	}
 

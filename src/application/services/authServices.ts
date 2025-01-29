@@ -4,6 +4,10 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../infrastructure/entity/types";
 import { UserDTO } from "../dtos/userDTO";
+import {
+	AutorizationError,
+	NotFoundError,
+} from "../../infrastructure/entity/error";
 
 @injectable()
 export class AuthServices {
@@ -13,34 +17,36 @@ export class AuthServices {
 	) {}
 
 	async registerUser(name: string, email: string, password: string) {
-		const user = await this.userRepo.getOne(email);
+		try {
+			await this.userRepo.getOne(email);
+			throw new AutorizationError("User already exists");
+		} catch (error) {
+			if (error instanceof NotFoundError) {
+				const hashedPassword = await Bun.password.hash(password);
+				const newUser = await this.userRepo.create({
+					name,
+					email,
+					password: hashedPassword,
+					avatar: "",
+				});
 
-		if (user) {
-			throw new Error("User already exists");
+				return new UserDTO(newUser).fromEntity();
+			}
+			throw error;
 		}
-
-		const hashedPassword = await Bun.password.hash(password);
-		const newUser = await this.userRepo.create({
-			name,
-			email,
-			password: hashedPassword,
-			avatar: "",
-		});
-
-		return new UserDTO(newUser).fromEntity();
 	}
 
 	async loginUser(email: string, password: string) {
 		const user = await this.userRepo.getOne(email);
 
 		if (!user) {
-			throw new Error("User not found");
+			throw new AutorizationError("Invalid credentials");
 		}
 
 		const matchPassword = await Bun.password.verify(password, user.password);
 
 		if (!matchPassword) {
-			throw new Error("Invalid password");
+			throw new AutorizationError("Invalid credentials");
 		}
 
 		const session = await this.sessionRepo.create(user.id);
@@ -51,20 +57,22 @@ export class AuthServices {
 	async checkSession(sessionId: string) {
 		const session = await this.sessionRepo.getOne(sessionId);
 		if (!session) {
-			throw new Error("Session invalid");
+			throw new AutorizationError("Session invalid");
 		}
 		return "valid";
 	}
 
 	async decodeSession(sessionId: string) {
-		const session = await this.sessionRepo.getOne(sessionId);
+		try {
+			const session = await this.sessionRepo.getOne(sessionId);
+			const user = await this.userRepo.getOne(session.userId);
 
-		if (!session) {
-			throw new Error("Session invalid");
+			return { user };
+		} catch (error) {
+			if (error instanceof NotFoundError) {
+				throw new AutorizationError("Session invalid");
+			}
+			throw error;
 		}
-
-		const user = await this.userRepo.getOne(session.userId);
-
-		return { user };
 	}
 }
