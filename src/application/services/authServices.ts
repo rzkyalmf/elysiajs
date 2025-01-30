@@ -38,15 +38,10 @@ export class AuthServices {
 
 	async loginUser(email: string, password: string) {
 		const user = await this.userRepo.getOne(email);
-
-		if (!user) {
-			throw new AutorizationError("Invalid credentials");
-		}
-
 		const matchPassword = await Bun.password.verify(password, user.password);
 
 		if (!matchPassword) {
-			throw new AutorizationError("Invalid credentials");
+			throw new AutorizationError("Wrong Password");
 		}
 
 		const session = await this.sessionRepo.create(user.id);
@@ -56,9 +51,7 @@ export class AuthServices {
 
 	async checkSession(sessionId: string) {
 		const session = await this.sessionRepo.getOne(sessionId);
-		if (!session) {
-			throw new AutorizationError("Session invalid");
-		}
+
 		return "valid";
 	}
 

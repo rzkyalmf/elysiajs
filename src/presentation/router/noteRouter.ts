@@ -16,17 +16,19 @@ export const noteRouter = new Elysia({ prefix: "/v1/notes" })
 		return { user };
 	})
 
-	// Routes
+	// Routes get all notes (/api/v1/notes)
 	.get("/", async ({ user }) => {
 		const notes = await noteServices.getAll(user.id);
 		return notes;
 	})
 
+	// Routes get one note (/api/v1/notes/:id)
 	.get("/:id", async ({ params }) => {
 		const note = await noteServices.getOne(params.id);
 		return note;
 	})
 
+	// Routes create note (/api/v1/notes)
 	.post(
 		"/",
 		async ({ body, user, set }) => {
@@ -49,6 +51,7 @@ export const noteRouter = new Elysia({ prefix: "/v1/notes" })
 		},
 	)
 
+	// Routes update note (/api/v1/notes/:id)
 	.patch(
 		"/:id",
 		async ({ params, body }) => {
@@ -69,6 +72,7 @@ export const noteRouter = new Elysia({ prefix: "/v1/notes" })
 		},
 	)
 
+	// Routes delete note (/api/v1/notes/:id)
 	.delete("/:id", async ({ params, set }) => {
 		set.status = 204;
 		await noteServices.delete(params.id);

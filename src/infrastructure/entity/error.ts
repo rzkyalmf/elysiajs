@@ -25,7 +25,7 @@ export class NotFoundError extends Error {
 
 	constructor(message: string) {
 		super(message);
-		this.status = 401; // Resource tidak ditemukan
+		this.status = 404; // Resource tidak ditemukan
 		this.code = "NOTFOUND_ERROR"; // Error saat data tidak ada
 	}
 }

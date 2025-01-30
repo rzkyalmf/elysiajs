@@ -1,17 +1,17 @@
 ### Get All User's Notes
 GET http://localhost:8000/api/v1/notes
 Content-Type: application/json
-Authorization: Bearer cm6hq76yi0000irtcp0ducktd
+Authorization: Bearer cm6i0b5eo0000irwhoh493bat
 
 ### Get User's Notes
 GET http://localhost:8000/api/v1/notes/dwadwa
-Authorization: Bearer cm6hq76yi0000irtcp0ducktd
+Authorization: Bearer cm6i0b5eo0000irwhoh493bat
 
 
 ### Create Note
 POST http://localhost:8000/api/v1/notes
 Content-Type: application/json
-Authorization: Bearer cm6hq76yi0000irtcp0ducktd
+Authorization: Bearer cm6i0b5eo0000irwhoh493bat
 
 {
     "title" : "dawdaw",
@@ -21,12 +21,12 @@ Authorization: Bearer cm6hq76yi0000irtcp0ducktd
 ### Edit Note
 PATCH http://localhost:8000/api/v1/notes/cm6hq7w7n0002irtcqoxajdhz
 Content-Type: application/json
-Authorization: Bearer cm6hq76yi0000irtcp0ducktd
+Authorization: Bearer cm6i0b5eo0000irwhoh493bat
 
 {
-    "title" : "sssss"
+    "title" : "alam"
 }
 
 ### Delete User's Notes
 DELETE http://localhost:8000/api/v1/notes/cm6hq99tf0004irtcdhf4mkbw
-Authorization: Bearer cm6hq76yi0000irtcp0ducktd
+Authorization: Bearer cm6i0b5eo0000irwhoh493bat
